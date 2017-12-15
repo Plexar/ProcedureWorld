@@ -14,7 +14,6 @@ public class Main {
 			try {
 				System.in.read(i);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			str= new String(i);

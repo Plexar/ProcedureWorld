@@ -8,7 +8,7 @@ public class Sweeper extends Thread {
 	private Queue<String> out = new ConcurrentLinkedDeque<String>();
 	boolean stop= false;
 
-	private World world= new World();
+	private World world= new World(out);
 	
 	public void put(String s) {
 		in.add(s);
