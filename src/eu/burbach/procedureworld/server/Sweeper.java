@@ -20,6 +20,7 @@ public class Sweeper extends Thread {
 	
 	public synchronized void ende() {
 		stop= true;
+		world.shutdown();
 	}
 	
 	private synchronized boolean isEnde() {

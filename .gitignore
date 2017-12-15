@@ -13,3 +13,4 @@ target/classes/META-INF/maven/org.jboss.tools/ProcedureWorld/pom.properties
 target/classes/META-INF/maven/org.jboss.tools/ProcedureWorld/pom.xml
 target/maven-archiver/pom.properties
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+World.class

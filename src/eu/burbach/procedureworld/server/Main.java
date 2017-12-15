@@ -18,12 +18,16 @@ public class Main {
 			}
 			str= new String(i);
 			str= str.replace("\n", "").replace("\0","");
-			if (str.length()>0)
-				s.put(str);
 			cont= !str.equalsIgnoreCase("exit");
-			str= s.poll();
-			if (str!=null)
-				System.out.println(str);
+			if (cont) {
+				if (str.length()>0)
+					s.put(str);
+				str= s.poll();
+				while (str!=null) {
+					System.out.println(str);
+					str= s.poll();
+				}
+			}
 		}
 		s.ende();
 	}
