@@ -1,4 +1,4 @@
-package eu.burbach.procedureworld.server;
+package eu.burbach.procedureworld.server.core;
 
 import java.io.File;
 import java.util.Queue;
@@ -16,6 +16,8 @@ public class World {
 	private Cleaner cleaner;
 	private Logger logger;
 	private Strategy strategy;
+	private Values values;
+	private Rules rules;
 	
 	private static enum RelTypes implements RelationshipType
 	{
@@ -28,8 +30,13 @@ public class World {
 		registerShutdownHook( db );	
 		builder= new Builder(db);
 		cleaner= new Cleaner(db,builder);
-		logger= new Logger(db,builder);
+		logger= new Logger(db,builder,out);
 		strategy= new Strategy(db,builder);
+		values= new Values(db,builder);
+		rules= new Rules(db,builder);
+		strategy.neighbours(rules, values);
+		values.neighbours(strategy, rules);
+		rules.neighbours(strategy, values);
 	}
 	
 	private static void registerShutdownHook( final GraphDatabaseService graphDb )
@@ -52,6 +59,8 @@ public class World {
 		cleaner.shutdown();
 		logger.shutdown();
 		strategy.shutdown();
+		rules.shutdown();
+		values.shutdown();
 	}
 	
 	public void userCommand(String in) {

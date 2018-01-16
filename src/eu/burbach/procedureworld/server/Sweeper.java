@@ -3,13 +3,20 @@ package eu.burbach.procedureworld.server;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class Sweeper extends Thread {
+import org.neo4j.graphdb.GraphDatabaseService;
+
+import eu.burbach.procedureworld.server.common.Service;
+import eu.burbach.procedureworld.server.core.World;
+
+public class Sweeper extends Service {
 	private Queue<String> in = new ConcurrentLinkedDeque<String>();
 	private Queue<String> out = new ConcurrentLinkedDeque<String>();
-	boolean stop= false;
-
 	private World world= new World(out);
-	
+
+	public Sweeper() {
+		super(null);
+	}
+
 	public void put(String s) {
 		in.add(s);
 	}
@@ -19,33 +26,18 @@ public class Sweeper extends Thread {
 	}
 	
 	public synchronized void ende() {
-		stop= true;
 		world.shutdown();
-	}
-	
-	private synchronized boolean isEnde() {
-		return stop;
+		this.shutdown();
 	}
 	
 	private void parse(String s) {
 		world.userCommand(s);
 	}
 	
-	public void run() {
-		for(;;) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (!in.isEmpty()) {
-				String s= in.poll();
-				parse(s);
-				out.add(s);
-			}
-			if (isEnde())
-				break;
+	protected void dosomething() {
+		if (!in.isEmpty()) {
+			String s = in.poll();
+			parse(s);
 		}
 	}
 }
